@@ -1,0 +1,265 @@
+---
+swagger: "2.0"
+info:
+  description: "Simple expense service"
+  version: "1.0.0"
+  title: "Expense service"
+  termsOfService: ""
+  contact:
+    email: "maximilian.huetter@gft.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost"
+basePath: "/v1"
+tags:
+- name: "expense"
+  description: "Store expenses"
+  externalDocs:
+    description: "Find out more"
+    url: "http://gft.com"
+schemes:
+- "https"
+- "http"
+paths:
+  /expense:
+    post:
+      tags:
+      - "expense"
+      summary: "Add a new expense"
+      description: "Add a new expense to your account, needs an expense object with\
+        \ at least date, description and value fields set."
+      operationId: appFunctions.add_expense
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Expense object to store"
+        required: true
+        schema:
+          $ref: "#/definitions/Expense"
+      responses:
+        200:
+          description: "successful operation"
+          examples: {}
+          schema:
+            $ref: "#/definitions/Expense"
+        400:
+          description: "Invalid input"      
+  /expense/{expenseId}:
+    get:
+      tags:
+      - "expense"
+      summary: "Find expense by ID"
+      description: "Returns a single expense by ID"
+      operationId: appFunctions.get_expense_by_id
+      produces:
+      - "application/json"
+      parameters:
+      - name: "expenseId"
+        in: "path"
+        description: "ID of expense to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Expense"
+        400:
+          description: "invalid ID supplied"
+        404:
+          description: "expense not found"      
+    put:
+      tags:
+      - "expense"
+      summary: "Update an existing expense"
+      description: "Send a complete expense object to replace an existing one"
+      operationId: appFunctions.update_expense
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "expenseId"
+        in: "path"
+        description: "ID of expense to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Expense object that needs to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/Expense"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Expense"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Expense not found"
+        405:
+          description: "Validation exception"      
+    delete:
+      tags:
+      - "expense"
+      summary: "Deletes an expense"
+      description: "Delete an expense identified by its ID"
+      operationId: appFunctions.delete_expense
+      produces:
+      - "application/json"
+      parameters:
+      - name: "expenseId"
+        in: "path"
+        description: "Id of the expense to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Expense not found"      
+  /expense/findByDate:
+    get:
+      tags:
+      - "expense"
+      summary: "Finds expenses by date"
+      description: "Multiple status values can be provided with comma separated strings"
+      operationId: appFunctions.find_expenses_by_date
+      produces:
+      - "application/json"
+      parameters:
+      - name: "date"
+        in: "query"
+        description: "Status values that need to be considered for filter"
+        required: true
+        type: "string"
+        format: "date"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Expense"
+        400:
+          description: "Invalid status value"      
+  /expense/findByTags:
+    get:
+      tags:
+      - "expense"
+      summary: "Finds Expense by tags"
+      description: "Muliple tags can be provided with comma separated strings. Use\
+        \ tag1, tag2, tag3 for testing."
+      operationId: appFunctions.find_expenses_by_tags
+      produces:
+      - "application/json"
+      parameters:
+      - name: "tags"
+        in: "query"
+        description: "Tags to filter by"
+        required: true
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Expense"      
+  /expenses/{month}:
+    get:
+      tags:
+      - "monthlyExpenses"
+      summary: "Returns the sum of expenses for one month"
+      description: "Returns the sum of expenses for one month, the month is given\
+        \ a number from 1 to 12."
+      operationId: appFunctions.get_monthly_expenses
+      produces:
+      - "application/json"
+      parameters:
+      - name: "month"
+        in: "path"
+        description: "The month to calculate the sum of the expenses for"
+        required: true
+        type: "integer"
+        maximum: 12
+        minimum: 1
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/inline_response_200"
+        400:
+          description: "Invalid month value"      
+definitions:
+  Expense:
+    type: object
+    required:
+    - "date"
+    - "desc"
+    - "value"
+    properties:
+      id:
+        type: integer
+        format: int64
+      desc:
+        type: string
+        example: Bread
+      value:
+        type: number
+        format: decimal
+        example: 1.2
+      date:
+        type: string
+        format: date
+        example: "2019-10-01"
+      tags:
+        type: array
+        items:
+          type: string
+    example:
+      id: 0
+      value: 1.2
+      desc: "Bread"
+      date: "2019-10-01"
+  inline_response_200:
+    type: "object"
+    properties:
+      month:
+        type: integer
+        example: 10
+      sum:
+        type: number
+        format: decimal
+        example: 1000.42
+      expenses:
+        type: array
+        items:
+          $ref: "#/definitions/Expense"
+    example:
+      month: 10
+      sum: 1000.42
+      expenses:
+      - id: 0
+        value: 1.2
+        desc: "Bread"
+        date: "2019-10-01"
+      - id: 1
+        value: 10
+        desc: "Lunch"
+        date: "2019-10-15"
