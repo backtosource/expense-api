@@ -28,12 +28,11 @@ class AppFunctions(object):
     def find_expenses_by_date(self, date):
         return None
 
-    def find_expenses_by_tags(self, tags):
+    def find_expenses_by_tags(self, tags=[]):        
         if not tags:
             return list(self.EXPENSES.values())
         else:
-            return []
-        
+            return [expense for expense in list(self.EXPENSES.values()) if set(tags).issubset(expense['tags'])]        
 
     def get_monthly_expenses(self, month):
         return None

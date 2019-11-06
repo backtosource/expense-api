@@ -130,7 +130,7 @@ paths:
           description: "Invalid ID supplied"
         404:
           description: "Expense not found"      
-  /expense/findByDate:
+  /expense/{date}:
     get:
       tags:
       - "expense"
@@ -155,7 +155,7 @@ paths:
               $ref: "#/definitions/Expense"
         400:
           description: "Invalid status value"      
-  /expense/findByTags:
+  /expense/{tags}:
     get:
       tags:
       - "expense"
