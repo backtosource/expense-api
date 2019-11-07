@@ -1,4 +1,4 @@
-import connexion
+import connexion, datetime
 
 class AppFunctions(object):
 
@@ -26,7 +26,7 @@ class AppFunctions(object):
         return None
 
     def find_expenses_by_date(self, date):
-        return None
+        return [expense for expense in list(self.EXPENSES.values()) if date == expense['date']]
 
     def find_expenses_by_tags(self, tags=[]):        
         if not tags:
@@ -34,5 +34,9 @@ class AppFunctions(object):
         else:
             return [expense for expense in list(self.EXPENSES.values()) if set(tags).issubset(expense['tags'])]        
 
-    def get_monthly_expenses(self, month):
-        return None
+    def get_monthly_expenses(self, month):        
+        monthlyExpenses = [expense for expense in list(self.EXPENSES.values()) if datetime.datetime.strptime(expense['date'], "%Y-%m-%d").date().month == month]
+        sum = 0
+        for expense in monthlyExpenses:
+            sum = sum + expense['value']
+        return {"month": month, "sum": sum, "expenses": monthlyExpenses}
