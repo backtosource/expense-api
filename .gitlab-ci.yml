@@ -4,5 +4,5 @@ stages:
 test:
   stage: build
   script:
-    - pip install -r requirements.txt
-    - python testrunner.py 
+    - "pip install -r requirements.txt"
+    - "python testrunner.py"
