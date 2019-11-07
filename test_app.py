@@ -1,11 +1,11 @@
 import unittest
 
-from appFunctions import AppFunctions
+from appFunctions import expenses
 
 class TestRESTApp(unittest.TestCase):    
 
     def setUp(self):
-        self.objectUnderTest = AppFunctions()
+        self.objectUnderTest = expenses.Expenses()
         self.TestExpense = {"value" : 1.2, "desc" : "Bread", "date" : "2019-10-01", "tags" : ["food"]}
         self.TestExpenseNew = {"value" : 1.2, "desc" : "Bread", "date" : "2019-10-01", "id" : 1, "tags" : ["food"]}
         self.TestExpenseUpdate = {"value" : 1.2, "desc" : "Toast", "date" : "2019-10-01", "id" : 1, "tags" : ["food", "daily"]}

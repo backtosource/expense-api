@@ -29,7 +29,7 @@ paths:
       summary: "Add a new expense"
       description: "Add a new expense to your account, needs an expense object with\
         \ at least date, description and value fields set."
-      operationId: appFunctions.add_expense
+      operationId: app.add_expense
       consumes:
       - "application/json"
       produces:
@@ -44,7 +44,11 @@ paths:
       responses:
         200:
           description: "successful operation"
-          examples: {}
+          examples: {
+                      "date": "2019-10-01",
+                      "desc": "Bread",
+                      "value": 1.2
+                    }
           schema:
             $ref: "#/definitions/Expense"
         400:
@@ -55,7 +59,7 @@ paths:
       - "expense"
       summary: "Find expense by ID"
       description: "Returns a single expense by ID"
-      operationId: appFunctions.get_expense_by_id
+      operationId: app.get_expense_by_id
       produces:
       - "application/json"
       parameters:
@@ -79,7 +83,7 @@ paths:
       - "expense"
       summary: "Update an existing expense"
       description: "Send a complete expense object to replace an existing one"
-      operationId: appFunctions.update_expense
+      operationId: app.update_expense
       consumes:
       - "application/json"
       produces:
@@ -113,7 +117,7 @@ paths:
       - "expense"
       summary: "Deletes an expense"
       description: "Delete an expense identified by its ID"
-      operationId: appFunctions.delete_expense
+      operationId: app.delete_expense
       produces:
       - "application/json"
       parameters:
@@ -130,13 +134,13 @@ paths:
           description: "Invalid ID supplied"
         404:
           description: "Expense not found"      
-  /expense/{date}:
+  /expense/findByDate:
     get:
       tags:
-      - "expense"
+      - "date"
       summary: "Finds expenses by date"
       description: "Multiple status values can be provided with comma separated strings"
-      operationId: appFunctions.find_expenses_by_date
+      operationId: app.find_expenses_by_date
       produces:
       - "application/json"
       parameters:
@@ -155,14 +159,14 @@ paths:
               $ref: "#/definitions/Expense"
         400:
           description: "Invalid status value"      
-  /expense/{tags}:
+  /expense/findByTags:
     get:
       tags:
-      - "expense"
+      - "tags"
       summary: "Finds Expense by tags"
       description: "Muliple tags can be provided with comma separated strings. Use\
         \ tag1, tag2, tag3 for testing."
-      operationId: appFunctions.find_expenses_by_tags
+      operationId: app.find_expenses_by_tags
       produces:
       - "application/json"
       parameters:
@@ -188,7 +192,7 @@ paths:
       summary: "Returns the sum of expenses for one month"
       description: "Returns the sum of expenses for one month, the month is given\
         \ a number from 1 to 12."
-      operationId: appFunctions.get_monthly_expenses
+      operationId: app.get_monthly_expenses
       produces:
       - "application/json"
       parameters:

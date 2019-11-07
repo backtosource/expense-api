@@ -1,6 +1,6 @@
-import connexion, datetime
+import datetime
 
-class AppFunctions(object):
+class Expenses(object):
 
     def __init__(self):
         self.EXPENSES = {}
