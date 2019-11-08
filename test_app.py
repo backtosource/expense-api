@@ -20,11 +20,13 @@ class TestRESTApp(unittest.TestCase):
         self.assertEqual(app.get_expense_by_id(1), self.TestExpenseNew)
 
     def test_get_expense_by_id_error(self):
+        app.add_expense(self.TestExpense)
         with self.assertRaises(KeyError) as raises:
-            app.get_expense_by_id(3)
+            app.get_expense_by_id(2)
 
     def test_update_expense(self):
-        self.assertEqual(app.update_expense(self.TestExpenseUpdate), self.TestExpenseUpdate)
+        app.add_expense(self.TestExpense)
+        self.assertEqual(app.update_expense(1, self.TestExpenseUpdate), self.TestExpenseUpdate)
     
     def test_delete_expense(self):
         app.add_expense(self.TestExpense)

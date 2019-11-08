@@ -90,13 +90,12 @@ paths:
       - "application/json"
       parameters:
       - name: "expenseId"
-        in: "path"
-        description: "ID of expense to return"
+        in: "path"        
         required: true
         type: "integer"
         format: "int64"
       - in: "body"
-        name: "body"
+        name: "expense"
         description: "Expense object that needs to be updated"
         required: true
         schema:
@@ -214,9 +213,9 @@ definitions:
   Expense:
     type: object
     required:
-    - "date"
-    - "desc"
-    - "value"
+      - "date"
+      - "desc"
+      - "value"
     properties:
       id:
         type: integer

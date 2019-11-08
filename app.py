@@ -15,6 +15,8 @@ def add_expense(expense):
     global runnung_id 
     runnung_id = runnung_id + 1
     expense['id'] = runnung_id
+    if not 'tags' in expense:
+        expense.update({'tags': []})
     EXPENSES.update({runnung_id : expense})
     return expense
 
@@ -23,9 +25,8 @@ def get_expense_by_id(expenseId):
     expense = EXPENSES[expenseId]
     return expense
 
-def update_expense(expense):
-    global EXPENSES
-    expenseId = expense['id']
+def update_expense(expenseId, expense):
+    global EXPENSES    
     EXPENSES[expenseId] = expense
     return EXPENSES[expenseId]
 
