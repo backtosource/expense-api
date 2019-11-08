@@ -52,7 +52,9 @@ paths:
           schema:
             $ref: "#/definitions/Expense"
         400:
-          description: "Invalid input"      
+          description: "Invalid input"
+        405:
+          description: "Validation exception"      
   /expense/{expenseId}:
     get:
       tags:
@@ -157,7 +159,7 @@ paths:
             items:
               $ref: "#/definitions/Expense"
         400:
-          description: "Invalid status value"      
+          description: "Invalid date value"      
   /expense/findByTags:
     get:
       tags:

@@ -12,7 +12,7 @@ def resetApp():
 
 def add_expense(expense):    
     global EXPENSES
-    global runnung_id 
+    global runnung_id
     runnung_id = runnung_id + 1
     expense['id'] = runnung_id
     if not 'tags' in expense:
@@ -22,17 +22,26 @@ def add_expense(expense):
 
 def get_expense_by_id(expenseId):
     global EXPENSES
-    expense = EXPENSES[expenseId]
+    try:
+        expense = EXPENSES[expenseId]
+    except KeyError as e:
+        return 'Not Found', 404
     return expense
 
 def update_expense(expenseId, expense):
-    global EXPENSES    
-    EXPENSES[expenseId] = expense
+    global EXPENSES
+    try:    
+        EXPENSES[expenseId] = expense
+    except KeyError as e:
+        return 'Not Found', 404
     return EXPENSES[expenseId]
 
 def delete_expense(expenseId):
     global EXPENSES
-    EXPENSES.pop(expenseId)
+    try:
+        EXPENSES.pop(expenseId)
+    except KeyError as e:
+        return 'Not Found', 404
     return None
 
 def find_expenses_by_date(date):
