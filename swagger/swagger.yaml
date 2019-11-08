@@ -36,7 +36,7 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "body"
+        name: "expense"
         description: "Expense object to store"
         required: true
         schema:

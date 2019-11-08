@@ -1,26 +1,54 @@
+import connexion, datetime
 
-import connexion
-from appFunctions import expenses
+EXPENSES = {}
+runnung_id = 0
 
-functions = expenses.Expenses()
+# Needed for testing only
+def resetApp():
+    global EXPENSES
+    EXPENSES.clear()
+    global runnung_id
+    runnung_id = 0
 
 def add_expense(expense):    
-    return functions.add_expense(expense)
+    global EXPENSES
+    global runnung_id 
+    runnung_id = runnung_id + 1
+    expense['id'] = runnung_id
+    EXPENSES.update({runnung_id : expense})
+    return expense
 
-def get_expense_by_id(expenseId):    
-    return functions.get_expense_by_id(expenseId)
+def get_expense_by_id(expenseId):
+    global EXPENSES
+    expense = EXPENSES[expenseId]
+    return expense
 
-def update_expense(expense):    
-    return functions.update_expense(expense)
+def update_expense(expense):
+    global EXPENSES
+    expenseId = expense['id']
+    EXPENSES[expenseId] = expense
+    return EXPENSES[expenseId]
 
-def delete_expense(expenseId):    
-    return functions.delete_expense(expenseId)
+def delete_expense(expenseId):
+    global EXPENSES
+    EXPENSES.pop(expenseId)
+    return None
 
 def find_expenses_by_date(date):
-    return functions.find_expenses_by_date(date)
+    global EXPENSES
+    return [expense for expense in list(EXPENSES.values()) if date == expense['date']]
 
-def find_expenses_by_tags(tags=[]):        
-    return functions.find_expenses_by_tags(tags)
+def find_expenses_by_tags(tags=[]):
+    global EXPENSES        
+    if not tags:
+        return list(EXPENSES.values())
+    else:
+        return [expense for expense in list(EXPENSES.values()) if set(tags).issubset(expense['tags'])]        
 
-def get_monthly_expenses(month):        
-    return functions.get_monthly_expenses(month)
+def get_monthly_expenses(month):
+    global EXPENSES        
+    monthlyExpenses = [expense for expense in list(EXPENSES.values()) if datetime.datetime.strptime(expense['date'], "%Y-%m-%d").date().month == month]
+    sum = 0
+    for expense in monthlyExpenses:
+        sum = sum + expense['value']
+    return {"month": month, "sum": sum, "expenses": monthlyExpenses}
