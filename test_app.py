@@ -21,8 +21,7 @@ class TestRESTApp(unittest.TestCase):
 
     def test_get_expense_by_id_error(self):
         app.add_expense(self.TestExpense)
-        with self.assertRaises(KeyError) as raises:
-            app.get_expense_by_id(2)
+        self.assertEqual(app.get_expense_by_id(2), ('Not Found', 404))            
 
     def test_update_expense(self):
         app.add_expense(self.TestExpense)
@@ -30,9 +29,7 @@ class TestRESTApp(unittest.TestCase):
     
     def test_delete_expense(self):
         app.add_expense(self.TestExpense)
-        self.assertEqual(app.delete_expense(1), None)
-        with self.assertRaises(KeyError) as raises:
-            app.get_expense_by_id(1)
+        self.assertEqual(app.delete_expense(1), ('Deleted', 200))        
 
     def test_find_expenses_by_tags(self):
         app.add_expense(self.TestExpense)

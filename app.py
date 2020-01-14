@@ -42,7 +42,7 @@ def delete_expense(expenseId):
         EXPENSES.pop(expenseId)
     except KeyError as e:
         return 'Not Found', 404
-    return None
+    return 'Deleted', 200
 
 def find_expenses_by_date(date):
     global EXPENSES
