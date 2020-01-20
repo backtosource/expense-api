@@ -46,16 +46,16 @@ class ExpenseApp(object):
             expenses_for_date.append(json.loads(self._rdb.get(expense_key)))
         return expenses_for_date
 
-    def find_expenses_by_tags(self, tags=[]):            
+    def find_expenses_by_tags(self, tags = None):            
         expenses_list = []
-        for expense_key in r.scan_iter(match='id_?'):        
+        for expense_key in self._rdb.scan_iter(match='id_?'):        
             expenses_list.append(json.loads(self._rdb.get(expense_key)))
         if not tags:        
             return expenses_list
         else:
             filtered_list = []
             for expense in expenses_list:
-                if tags in expense['tags']:
+                if all(elem in expense['tags'] for elem in tags):
                     filtered_list.append(expense)
             return filtered_list        
 
@@ -64,7 +64,9 @@ class ExpenseApp(object):
         for expense_dates in self._rdb.scan_iter(match= year_month + "-*"):
             monthly_key_collection.append(self._rdb.get(expense_dates))
         sum = 0
-        for expense_key in monthly_id_collection:
+        monthlyExpenses = []
+        for expense_key in monthly_key_collection:
             expense = json.loads(self._rdb.get(expense_key))
             sum = sum + expense['value']
+            monthlyExpenses.append(expense)
         return {"year_month": year_month, "sum": sum, "expenses": monthlyExpenses}

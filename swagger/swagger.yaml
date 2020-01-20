@@ -10,7 +10,7 @@ info:
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "localhost"
+host: "localhost:8080"
 basePath: "/v1"
 tags:
 - name: "expense"
@@ -186,24 +186,21 @@ paths:
             type: "array"
             items:
               $ref: "#/definitions/Expense"      
-  /expenses/{month}:
+  /expenses/{year-month}:
     get:
       tags:
       - "monthlyExpenses"
       summary: "Returns the sum of expenses for one month"
-      description: "Returns the sum of expenses for one month, the month is given\
-        \ a number from 1 to 12."
+      description: "Returns the sum of expenses for one month, the month is given as string in the format YYYY-MM e.g. 2020-01"
       operationId: app.get_monthly_expenses
       produces:
       - "application/json"
       parameters:
-      - name: "month"
+      - name: "year-month"
         in: "path"
-        description: "The month to calculate the sum of the expenses for"
+        description: "The year and month to calculate the sum of the expenses for"
         required: true
-        type: "integer"
-        maximum: 12
-        minimum: 1
+        type: "string"        
       responses:
         200:
           description: "successful operation"
@@ -232,7 +229,7 @@ definitions:
       date:
         type: string
         format: date
-        example: "2019-10-01"
+        example: "2020-10-01"
       tags:
         type: array
         items:
@@ -241,30 +238,30 @@ definitions:
       id: 0
       value: 1.2
       desc: "Bread"
-      date: "2019-10-01"
+      date: "2020-10-01"
   inline_response_200:
     type: "object"
     properties:
       month:
-        type: integer
-        example: 10
+        type: string
+        example: 2020-01
       sum:
         type: number
         format: decimal
-        example: 1000.42
+        example: 10.42
       expenses:
         type: array
         items:
           $ref: "#/definitions/Expense"
     example:
-      month: 10
-      sum: 1000.42
+      month: 2020-01
+      sum: 10.2
       expenses:
       - id: 0
         value: 1.2
         desc: "Bread"
-        date: "2019-10-01"
+        date: "2020-01-10"
       - id: 1
         value: 10
         desc: "Lunch"
-        date: "2019-10-15"
+        date: "2020-01-15"
