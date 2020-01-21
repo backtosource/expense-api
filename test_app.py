@@ -23,21 +23,21 @@ class TestRESTApp(TestCase):
     def test_get_expense_by_id(self, mock_redis):
         app = ExpenseApp()
         mock_redis.return_value.get.return_value = json.dumps(TestRESTApp._testExpenseNew)
-        self.assertEqual(app.get_expense_by_id(1), TestRESTApp._testExpenseNew)
+        self.assertEqual(app.get_expense_by_id('id_1'), TestRESTApp._testExpenseNew)
         mock_redis.return_value.get.assert_called_once()
 
     @patch('model.ExpenseApp.Redis')
     def test_get_expense_by_id_error(self, mock_redis):
         app = ExpenseApp()
         mock_redis.return_value.get.return_value = None
-        self.assertEqual(app.get_expense_by_id(2), ('Not Found', 404))
+        self.assertEqual(app.get_expense_by_id('id_2'), ('Not Found', 404))
         mock_redis.return_value.get.assert_called_once()           
     
     @patch('model.ExpenseApp.Redis')    
     def test_update_expense(self, mock_redis):
         app = ExpenseApp()
         mock_redis.return_value.exists.return_value = True         
-        self.assertEqual(app.update_expense(1, TestRESTApp._testExpenseUpdate), TestRESTApp._testExpenseUpdate)
+        self.assertEqual(app.update_expense('id_1', TestRESTApp._testExpenseUpdate), TestRESTApp._testExpenseUpdate)
         mock_redis.return_value.exists.assert_called_once()
         mock_redis.return_value.set.assert_called_once()
     
@@ -46,7 +46,7 @@ class TestRESTApp(TestCase):
         app = ExpenseApp()
         mock_redis.return_value.exists.return_value = True
         mock_redis.return_value.get.return_value = json.dumps(TestRESTApp._testExpenseNew)  
-        self.assertEqual(app.delete_expense(1), ('Deleted', 200))
+        self.assertEqual(app.delete_expense('id_1'), ('Deleted', 200))
         mock_redis.return_value.exists.assert_called_once()
         mock_redis.return_value.get.assert_called_once()
         mock_redis.return_value.delete.assert_called_once()

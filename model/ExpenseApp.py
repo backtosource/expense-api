@@ -34,8 +34,8 @@ class ExpenseApp(object):
         if self._rdb.exists(expenseId):
             expense = json.loads(self._rdb.get(expenseId))
             expense_date = expense['date']
-            self._rdb.delete(expenseId, expense)            
-            self._rdb.srem(expense_date, 'id_' + str(expenseId))
+            self._rdb.delete(expenseId)            
+            self._rdb.srem(expense_date, expenseId)
         else:
             return 'Not Found', 404
         return 'Deleted', 200
