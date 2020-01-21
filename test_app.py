@@ -6,8 +6,8 @@ import json
 class TestRESTApp(TestCase):   
 
     _testExpense = {"value" : 1.2, "desc" : "Bread", "date" : "2019-10-01", "tags" : ["food"]}
-    _testExpenseNew = {"value" : 1.2, "desc" : "Bread", "date" : "2019-10-01", "id" : 1, "tags" : ["food"]}
-    _testExpenseUpdate = {"value" : 1.2, "desc" : "Toast", "date" : "2019-10-01", "id" : 2, "tags" : ["food", "daily"]}
+    _testExpenseNew = {"value" : 1.2, "desc" : "Bread", "date" : "2019-10-01", "id" : "id_1", "tags" : ["food"]}
+    _testExpenseUpdate = {"value" : 1.2, "desc" : "Toast", "date" : "2019-10-01", "id" : "id_2", "tags" : ["food", "daily"]}
     _testExpenseDate2 = {"value" : 2.5, "desc" : "Apples", "date" : "2019-10-10", "tags" : ["food"]}
  
     @patch('model.ExpenseApp.Redis')

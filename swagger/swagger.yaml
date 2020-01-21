@@ -69,8 +69,7 @@ paths:
         in: "path"
         description: "ID of expense to return"
         required: true
-        type: "integer"
-        format: "int64"
+        type: "string"        
       responses:
         200:
           description: "successful operation"
@@ -94,8 +93,7 @@ paths:
       - name: "expenseId"
         in: "path"        
         required: true
-        type: "integer"
-        format: "int64"
+        type: "string"        
       - in: "body"
         name: "expense"
         description: "Expense object that needs to be updated"
@@ -126,8 +124,7 @@ paths:
         in: "path"
         description: "Id of the expense to delete"
         required: true
-        type: "integer"
-        format: "int64"
+        type: "string"        
       responses:
         200:
           description: "successful operation"
@@ -217,11 +214,11 @@ definitions:
       - "value"
     properties:
       id:
-        type: integer
-        format: int64
+        type: string
+        example: "id_1"
       desc:
         type: string
-        example: Bread
+        example: "Bread"
       value:
         type: number
         format: decimal
@@ -235,7 +232,7 @@ definitions:
         items:
           type: string
     example:
-      id: 0
+      id: "id_1"
       value: 1.2
       desc: "Bread"
       date: "2020-10-01"
@@ -257,11 +254,11 @@ definitions:
       month: 2020-01
       sum: 10.2
       expenses:
-      - id: 0
+      - id: "id_1"
         value: 1.2
         desc: "Bread"
         date: "2020-01-10"
-      - id: 1
+      - id: "id_2"
         value: 10
         desc: "Lunch"
         date: "2020-01-15"

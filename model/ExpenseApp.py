@@ -7,11 +7,11 @@ class ExpenseApp(object):
         self._rdb = Redis(host='redis', port=6379, db=0, socket_connect_timeout=2, socket_timeout=2)
 
     def add_expense(self, expense):           
-        expense_key = self._rdb.incr('expense_key')         
-        expense['id'] = expense_key       
+        expense_key = self._rdb.incr('expense_key')             
         if not 'tags' in expense:
             expense.update({'tags': []})
         redis_key = 'id_' + str(expense_key)
+        expense['id'] = redis_key
         self._rdb.set(redis_key, json.dumps(expense))
         expense_date = expense['date']    
         self._rdb.sadd(expense_date, redis_key)    
