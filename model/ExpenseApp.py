@@ -1,10 +1,17 @@
 import connexion, json
-from redis import Redis
+from redis import StrictRedis
+import os
 
 class ExpenseApp(object):
 
     def __init__(self):
-        self._rdb = Redis(host='redis', port=6379, db=0, socket_connect_timeout=2, socket_timeout=2)
+        redisHostname = os.environ.get('redisHost', 'localhost')
+        print("Redis hostname: " + redisHostname)        
+        self._rdb = StrictRedis(host=redisHostname, port=6379, db=0, socket_connect_timeout=2, socket_timeout=2)
+        redisInfo = self._rdb.info()
+        print("Redis version: " + redisInfo.get('redis_version'))
+        print("Redis mode: " + redisInfo.get('redis_mode'))
+
 
     def add_expense(self, expense):           
         expense_key = self._rdb.incr('expense_key')             
@@ -60,9 +67,9 @@ class ExpenseApp(object):
             return filtered_list        
 
     def get_monthly_expenses(self, year_month):
-        monthly_key_collection = []
+        monthly_key_collection = set()
         for expense_dates in self._rdb.scan_iter(match= year_month + "-*"):
-            monthly_key_collection.append(self._rdb.get(expense_dates))
+            monthly_key_collection.update(self._rdb.smembers(expense_dates))
         sum = 0
         monthlyExpenses = []
         for expense_key in monthly_key_collection:
