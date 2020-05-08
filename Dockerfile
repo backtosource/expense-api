@@ -11,8 +11,6 @@ COPY . /usr/src/app
 
 EXPOSE 8080
 
-ENV redisHost=redis
-
 ENTRYPOINT ["python3"]
 
 CMD ["expenseServer.py"]

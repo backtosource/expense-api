@@ -232,6 +232,7 @@ definitions:
         items:
           type: string
     example:
+      id: "id_1"
       value: 1.2
       desc: "Bread"
       date: "2020-10-01"
