@@ -17,7 +17,7 @@ tags:
   description: "Store expenses"
   externalDocs:
     description: "Find out more"
-    url: "http://gft.com"
+    url: "http://backtosource.de"
 schemes:
 - "https"
 - "http"

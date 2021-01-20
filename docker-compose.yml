@@ -7,12 +7,20 @@ services:
     networks:
       - apinet
   api:    
-    image: localhost:5000/expense-api:v2    
+    image: localhost:5000/expensev2    
     ports:
       - "8080:8080"
     networks:
       - apinet    
     depends_on:
       - redis
+  gateway:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    networks:
+      - apinet
+    depends_on:
+      - api
 networks:
   apinet:
